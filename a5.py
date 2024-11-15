@@ -106,7 +106,17 @@ class Board:
         Returns:
             a tuple of row, column index identifying the most constrained cell
         """
-        pass
+        mini = self.size
+        row = 0
+        column = 0
+
+        for i, r in enumerate(self.rows):
+            for j, col in enumerate(r):
+                if isinstance(col,list) and len(col) < mini:
+                    mini = len(col)
+                    row = i
+                    column = j
+        return (row, column)
 
     def failure_test(self) -> bool:
         """Check if we've failed to correctly fill out the puzzle. If we find a cell
@@ -182,9 +192,10 @@ def BFS(state: Board) -> Board:
 if __name__ == "__main__":
     # uncomment the below lines once you've implemented the board class
    
-   b = Board()
-   b.update(3,5,4)
-   b.print_pretty
+    b = Board()
+    b.update(3,5,4)
+    b.print_pretty()
+    b.find_most_constrained_cell()
 
     # # CODE BELOW HERE RUNS YOUR BFS/DFS
     # print("<<<<<<<<<<<<<< Solving Sudoku >>>>>>>>>>>>>>")
