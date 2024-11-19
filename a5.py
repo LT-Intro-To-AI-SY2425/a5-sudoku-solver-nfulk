@@ -175,7 +175,29 @@ def DFS(state: Board) -> Board:
     Returns:
         either None in the case of invalid input or a solved board
     """
-    pass
+    s = Stack([state])
+
+    while not s.is_empty():
+        b: Board = s.pop()
+        if b.goal_test():
+            return b
+        mcc = b.find_most_constrained_cell()
+        row, col = mcc
+        print(row, col)
+        for val in b.rows[row][col]:
+            print(val)
+            cpy: Board = copy.deepcopy(b)
+            cpy.update(row, col, val)
+            s.push(cpy)
+    
+    return None
+    # s.push(state)
+    # b: Board = s.pop()
+    # mcc = b.find_most_constrained_cell()
+    # row = mcc[0]
+    # col = mcc[1]
+    # val = b.rows[row][col][0]
+    # b.update
 
 
 def BFS(state: Board) -> Board:
