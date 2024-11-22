@@ -183,7 +183,9 @@ def DFS(state: Board) -> Board:
 
     while not s.is_empty():
         b: Board = s.pop()
+        num_iter += 1
         if b.goal_test():
+            print(f"Number of iterations: {num_iter}")
             return b
         mcc = b.find_most_constrained_cell()
         row, col = mcc
@@ -216,16 +218,33 @@ def BFS(state: Board) -> Board:
     Returns:
         either None in the case of invalid input or a solved board
     """
-    pass
+    queue = Queue()
+    queue.unqueue(state)
+
+    while not queue.is_empty():
+        current_state = queue.dequeue()
+        if current_state.goal_test():
+            return current_state
+        if current_state.failure_test():
+            continue
+        row, col = current_state.find_most_constrained_cell()
+        possible_values = current_state.rows[row][col]
+        for value in possible_values:
+            new_state = copy.deepcopy(current_state)
+            new_state.update(row, col, value)
+            queue.enqueue(new_state)
+        return None
+
+
 
 
 if __name__ == "__main__":
     # uncomment the below lines once you've implemented the board class
    
-    b = Board()
-    b.update(3,5,4)
-    b.print_pretty()
-    b.find_most_constrained_cell()
+    # b = Board()
+    # b.update(3,5,4)
+    # b.print_pretty()
+    # b.find_most_constrained_cell()
 
     # # CODE BELOW HERE RUNS YOUR BFS/DFS
     print("<<<<<<<<<<<<<< Solving Sudoku >>>>>>>>>>>>>>")
